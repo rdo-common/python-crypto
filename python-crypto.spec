@@ -5,7 +5,7 @@ Summary: 	A cryptography library for Python.
 Name: 		python-crypto
 Version: 	1.9
 Epoch:		0
-Release: 	0.fdr.6.a6.1
+Release: 	0.fdr.6.a6.2
 License: 	Python License (CNRI Python License)
 Group: 		Development/Libraries
 URL: 		http://www.amk.ca/python/code/crypto.html
