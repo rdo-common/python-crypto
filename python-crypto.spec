@@ -1,20 +1,19 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
-Summary: 	A cryptography library for Python.
-Name: 		python-crypto
-Version: 	2.0
-Epoch:		0
-Release: 	2
-License: 	Python License (CNRI Python License)
-Group: 		Development/Libraries
-URL: 		http://www.amk.ca/python/code/crypto.html
+Summary:	Cryptography library for Python
+Name:		python-crypto
+Version:	2.0
+Release:	2
+License:	Python License (CNRI Python License)
+Group:		Development/Libraries
+URL:		http://www.amk.ca/python/code/crypto.html
 Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.tar.gz
 Patch0:		%{name}-x86_64-buildfix.patch
-BuildRequires:	python >= 0:2.2
-BuildRequires:	python-devel >= 0:2.2
-BuildRequires:	gmp-devel >= 0:4.1
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
+BuildRequires:	python >= 2.2
+BuildRequires:	python-devel >= 2.2
+BuildRequires:	gmp-devel >= 4.1
+BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
 Requires:	python-abi = %(%{__python} -c "import sys ; print sys.version[:3]")
 
 %description
@@ -24,10 +23,10 @@ etc.).
 
 # The pre section.
 %prep
-%setup -n pycrypto-2.0 -q 
+%setup -n pycrypto-2.0 -q
 %ifarch x86_64
 %patch0 -b .patch0
-%endif 
+%endif
 
 # The build section.
 %build
@@ -45,7 +44,7 @@ find -name "*.py"|xargs %{__perl} -pi -e "s:/usr/local/bin/python:%{__python}:"
 rm -rf $RPM_BUILD_ROOT
 
 # The files section.
-%files 
+%files
 %defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LICENSE Doc Demo
 %{python_sitearch}/Crypto/*.py
@@ -79,7 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sat Dec 18 2004 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0-2
 - Fix build on x86_64: use python_sitearch for files and patch source
-  to find gmp 
+  to find gmp
 
 * Thu Aug 26 2004 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0-0.fdr.1
 - Update to 2.00
