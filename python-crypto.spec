@@ -3,18 +3,18 @@
 
 Summary: 	A cryptography library for Python.
 Name: 		python-crypto
-Version: 	1.9
+Version: 	2.0
 Epoch:		0
-Release: 	0.fdr.6.a6.2
+Release: 	0.fdr.1.2
 License: 	Python License (CNRI Python License)
 Group: 		Development/Libraries
 URL: 		http://www.amk.ca/python/code/crypto.html
-Source:		http://www.amk.ca/files/python/crypto/pycrypto-1.9a6.tar.gz
+Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.tar.gz
 BuildRequires:	python >= 0:2.2
 BuildRequires:	python-devel >= 0:2.2
 BuildRequires:	gmp-devel >= 0:4.1
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
-Requires:   python-abi = %(%{__python} -c "import sys ; print sys.version[:3]")
+Requires:	python-abi = %(%{__python} -c "import sys ; print sys.version[:3]")
 
 %description
 Python-crypto is a collection of both secure hash functions (such as MD5 and
@@ -23,7 +23,7 @@ etc.).
 
 # The pre section.
 %prep
-%setup -n pycrypto-1.9a6 -q 
+%setup -n pycrypto-2.0 -q 
 
 # The build section.
 %build
@@ -73,16 +73,19 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{python_sitelib}/Crypto/Util/
 
 %changelog
-* Fri Aug 13 2004 Ville Skyttä <ville.skytta at iki.fi> - 0:1.9-0.fdr.6.a6
+* Thu Aug 26 2004 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0-0.fdr.1
+- Update to 2.00
+
+* Fri Aug 13 2004 Ville Skytta <ville.skytta at iki.fi> - 0:1.9-0.fdr.6.a6
 - Don't use get_python_version(), it's available in Python >= 2.3 only.
 
-* Thu Aug 12 2004 Thorsten Leemhuis <fedora at leemhuis dot info> 0.3.2-0.fdr.5.a6
+* Thu Aug 12 2004 Thorsten Leemhuis <fedora at leemhuis dot info> 0:1.9-0.fdr.5.a6
 - Own dir python_sitearch/Crypto/
 
-* Wed Aug 11 2004 Thorsten Leemhuis <fedora at leemhuis dot info> 0.3.2-0.fdr.4.a6
+* Wed Aug 11 2004 Thorsten Leemhuis <fedora at leemhuis dot info> 0:1.9-0.fdr.4.a6
 - Match python spec template more
 
-* Sat Jul 17 2004 Thorsten Leemhuis <fedora at leemhuis dot info> 0.3.2-0.fdr.4.a6
+* Sat Jul 17 2004 Thorsten Leemhuis <fedora at leemhuis dot info> 0:1.9-0.fdr.3.a6
 - Own _libdir/python/site-packages/Crypto/
 
 * Wed Mar 24 2004 Panu Matilainen <pmatilai@welho.com> 0.3.2-0.fdr.2.a6
