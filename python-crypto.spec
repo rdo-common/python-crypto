@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0
-Release:	2
+Release:	3
 License:	Python License (CNRI Python License)
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
@@ -76,6 +76,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{python_sitearch}/Crypto/Util/
 
 %changelog
+* Mon Mar 21 2005 Seth Vidal <skvidal at phy.duke.edu> - 0:2.0-3
+- iterate release for build on python 2.4 based systems
+
 * Sat Dec 18 2004 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0-2
 - Fix build on x86_64: use python_sitearch for files and patch source
   to find gmp
