@@ -5,11 +5,12 @@ Summary: 	A cryptography library for Python.
 Name: 		python-crypto
 Version: 	2.0
 Epoch:		0
-Release: 	1
+Release: 	2
 License: 	Python License (CNRI Python License)
 Group: 		Development/Libraries
 URL: 		http://www.amk.ca/python/code/crypto.html
 Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.tar.gz
+Patch0:		%{name}-x86_64-buildfix.patch
 BuildRequires:	python >= 0:2.2
 BuildRequires:	python-devel >= 0:2.2
 BuildRequires:	gmp-devel >= 0:4.1
@@ -24,6 +25,9 @@ etc.).
 # The pre section.
 %prep
 %setup -n pycrypto-2.0 -q 
+%ifarch x86_64
+%patch0 -b .patch0
+%endif 
 
 # The build section.
 %build
@@ -44,35 +48,39 @@ rm -rf $RPM_BUILD_ROOT
 %files 
 %defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LICENSE Doc Demo
-%{python_sitelib}/Crypto/*.py
-%{python_sitelib}/Crypto/*.pyc
-%ghost %{python_sitelib}/Crypto/*.pyo
+%{python_sitearch}/Crypto/*.py
+%{python_sitearch}/Crypto/*.pyc
+%ghost %{python_sitearch}/Crypto/*.pyo
 %{python_sitearch}/Crypto/Cipher/*.so
-%{python_sitelib}/Crypto/Cipher/*.py
-%{python_sitelib}/Crypto/Cipher/*.pyc
-%ghost %{python_sitelib}/Crypto/Cipher/*.pyo
+%{python_sitearch}/Crypto/Cipher/*.py
+%{python_sitearch}/Crypto/Cipher/*.pyc
+%ghost %{python_sitearch}/Crypto/Cipher/*.pyo
 %{python_sitearch}/Crypto/Hash/*.so
-%{python_sitelib}/Crypto/Hash/*.py
-%{python_sitelib}/Crypto/Hash/*.pyc
-%ghost %{python_sitelib}/Crypto/Hash/*.pyo
-%{python_sitelib}/Crypto/Protocol/*.py
-%{python_sitelib}/Crypto/Protocol/*.pyc
-%ghost %{python_sitelib}/Crypto/Protocol/*.pyo
+%{python_sitearch}/Crypto/Hash/*.py
+%{python_sitearch}/Crypto/Hash/*.pyc
+%ghost %{python_sitearch}/Crypto/Hash/*.pyo
+%{python_sitearch}/Crypto/Protocol/*.py
+%{python_sitearch}/Crypto/Protocol/*.pyc
+%ghost %{python_sitearch}/Crypto/Protocol/*.pyo
 %{python_sitearch}/Crypto/PublicKey/*.so
-%{python_sitelib}/Crypto/PublicKey/*.py
-%{python_sitelib}/Crypto/PublicKey/*.pyc
-%ghost %{python_sitelib}/Crypto/PublicKey/*.pyo
-%{python_sitelib}/Crypto/Util/*.py
-%{python_sitelib}/Crypto/Util/*.pyc
-%ghost %{python_sitelib}/Crypto/Util/*.pyo
-%dir %{python_sitelib}/Crypto
-%dir %{python_sitelib}/Crypto/Cipher/
-%dir %{python_sitelib}/Crypto/Hash/
-%dir %{python_sitelib}/Crypto/Protocol/
-%dir %{python_sitelib}/Crypto/PublicKey/
-%dir %{python_sitelib}/Crypto/Util/
+%{python_sitearch}/Crypto/PublicKey/*.py
+%{python_sitearch}/Crypto/PublicKey/*.pyc
+%ghost %{python_sitearch}/Crypto/PublicKey/*.pyo
+%{python_sitearch}/Crypto/Util/*.py
+%{python_sitearch}/Crypto/Util/*.pyc
+%ghost %{python_sitearch}/Crypto/Util/*.pyo
+%dir %{python_sitearch}/Crypto
+%dir %{python_sitearch}/Crypto/Cipher/
+%dir %{python_sitearch}/Crypto/Hash/
+%dir %{python_sitearch}/Crypto/Protocol/
+%dir %{python_sitearch}/Crypto/PublicKey/
+%dir %{python_sitearch}/Crypto/Util/
 
 %changelog
+* Sat Dec 18 2004 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0-2
+- Fix build on x86_64: use python_sitearch for files and patch source
+  to find gmp 
+
 * Thu Aug 26 2004 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0-0.fdr.1
 - Update to 2.00
 
