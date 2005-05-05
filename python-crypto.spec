@@ -4,12 +4,13 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0
-Release:	3
+Release:	4
 License:	Python License (CNRI Python License)
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
 Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.tar.gz
 Patch0:		%{name}-x86_64-buildfix.patch
+Patch1:		%{name}-64bit-unclean.patch
 BuildRequires:	python >= 2.2
 BuildRequires:	python-devel >= 2.2
 BuildRequires:	gmp-devel >= 4.1
@@ -27,6 +28,7 @@ etc.).
 %ifarch x86_64
 %patch0 -b .patch0
 %endif
+%patch1 -b .patch1 -p 1
 
 # The build section.
 %build
@@ -76,6 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{python_sitearch}/Crypto/Util/
 
 %changelog
+* Thu May 05 2005 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0-4
+- add python-crypto-64bit-unclean.patch (#156173)
+
 * Mon Mar 21 2005 Seth Vidal <skvidal at phy.duke.edu> - 0:2.0-3
 - iterate release for build on python 2.4 based systems
 
