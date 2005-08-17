@@ -3,14 +3,13 @@
 
 Summary:	Cryptography library for Python
 Name:		python-crypto
-Version:	2.0
-Release:	4
+Version:	2.0.1
+Release:	1%{?dist}
 License:	Python License (CNRI Python License)
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
-Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.tar.gz
+Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.1.tar.gz
 Patch0:		%{name}-x86_64-buildfix.patch
-Patch1:		%{name}-64bit-unclean.patch
 BuildRequires:	python >= 2.2
 BuildRequires:	python-devel >= 2.2
 BuildRequires:	gmp-devel >= 4.1
@@ -22,33 +21,31 @@ Python-crypto is a collection of both secure hash functions (such as MD5 and
 SHA), and various encryption algorithms (AES, DES, IDEA, RSA, ElGamal,
 etc.).
 
-# The pre section.
+
 %prep
-%setup -n pycrypto-2.0 -q
+%setup -n pycrypto-%{version} -q
 %ifarch x86_64
 %patch0 -b .patch0
 %endif
-%patch1 -b .patch1 -p 1
 
-# The build section.
+
 %build
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
-# The install section.
+
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-
 find -name "*.py"|xargs %{__perl} -pi -e "s:/usr/local/bin/python:%{__python}:"
 
-# The clean section.
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-# The files section.
+
 %files
 %defattr(-,root,root,-)
-%doc README TODO ACKS ChangeLog LICENSE Doc Demo
+%doc README TODO ACKS ChangeLog LICENSE Doc
 %{python_sitearch}/Crypto/*.py
 %{python_sitearch}/Crypto/*.pyc
 %ghost %{python_sitearch}/Crypto/*.pyo
@@ -77,7 +74,14 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{python_sitearch}/Crypto/PublicKey/
 %dir %{python_sitearch}/Crypto/Util/
 
+
 %changelog
+* Wed Aug 17 2005 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0.1-1
+- Update to 2.0.1
+- Use Dist
+- Drop python-crypto-64bit-unclean.patch, similar patch was applied 
+  upstream
+
 * Thu May 05 2005 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0-4
 - add python-crypto-64bit-unclean.patch (#156173)
 
