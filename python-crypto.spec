@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	Python License (CNRI Python License)
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
@@ -46,27 +46,15 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LICENSE Doc
-%{python_sitearch}/Crypto/*.py
-%{python_sitearch}/Crypto/*.pyc
-%ghost %{python_sitearch}/Crypto/*.pyo
+%{python_sitearch}/Crypto/*.py*
 %{python_sitearch}/Crypto/Cipher/*.so
-%{python_sitearch}/Crypto/Cipher/*.py
-%{python_sitearch}/Crypto/Cipher/*.pyc
-%ghost %{python_sitearch}/Crypto/Cipher/*.pyo
+%{python_sitearch}/Crypto/Cipher/*.py*
 %{python_sitearch}/Crypto/Hash/*.so
-%{python_sitearch}/Crypto/Hash/*.py
-%{python_sitearch}/Crypto/Hash/*.pyc
-%ghost %{python_sitearch}/Crypto/Hash/*.pyo
-%{python_sitearch}/Crypto/Protocol/*.py
-%{python_sitearch}/Crypto/Protocol/*.pyc
-%ghost %{python_sitearch}/Crypto/Protocol/*.pyo
+%{python_sitearch}/Crypto/Hash/*.py*
+%{python_sitearch}/Crypto/Protocol/*.py*
 %{python_sitearch}/Crypto/PublicKey/*.so
-%{python_sitearch}/Crypto/PublicKey/*.py
-%{python_sitearch}/Crypto/PublicKey/*.pyc
-%ghost %{python_sitearch}/Crypto/PublicKey/*.pyo
-%{python_sitearch}/Crypto/Util/*.py
-%{python_sitearch}/Crypto/Util/*.pyc
-%ghost %{python_sitearch}/Crypto/Util/*.pyo
+%{python_sitearch}/Crypto/PublicKey/*.py*
+%{python_sitearch}/Crypto/Util/*.py*
 %dir %{python_sitearch}/Crypto
 %dir %{python_sitearch}/Crypto/Cipher/
 %dir %{python_sitearch}/Crypto/Hash/
@@ -76,6 +64,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Sep 07 2006 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 2.0.1-4
+- Don't ghost pyo files (#205408)
+
 * Tue Aug 29 2006 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 2.0.1-3
 - Rebuild for Fedora Extras 6
 
