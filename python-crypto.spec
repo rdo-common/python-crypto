@@ -64,7 +64,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sat Dec 09 2006 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 2.0.1-6
+* Wed Apr 18 2007 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 2.0.1-7
+- Fix typo
+
+* Wed Apr 18 2007 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 2.0.1-6
 - Remove dist
 - rebuild, because the older version was much bigger, as it was build when
   distutils was doing static links of libpython
