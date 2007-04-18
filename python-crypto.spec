@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	6
+Release:	7
 License:	Python License (CNRI Python License)
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
