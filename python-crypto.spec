@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	5%{?dist}
+Release:	6
 License:	Python License (CNRI Python License)
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
@@ -64,6 +64,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Dec 09 2006 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 2.0.1-6
+- Remove dist
+- rebuild, because the older version was much bigger, as it was build when
+  distutils was doing static links of libpython
+
 * Sat Dec 09 2006 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 2.0.1-5
 - Rebuild for python 2.5
 
