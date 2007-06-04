@@ -4,12 +4,11 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	7
+Release:	8
 License:	Python License (CNRI Python License)
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
 Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.1.tar.gz
-Patch0:		%{name}-x86_64-buildfix.patch
 BuildRequires:	python >= 2.2
 BuildRequires:	python-devel >= 2.2
 BuildRequires:	gmp-devel >= 4.1
@@ -24,9 +23,7 @@ etc.).
 
 %prep
 %setup -n pycrypto-%{version} -q
-%ifarch x86_64
-%patch0 -b .patch0
-%endif
+sed -i s:/lib:/%_lib:g setup.py
 
 
 %build
@@ -64,6 +61,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jun 04 2007 David Woodhouse <dwmw2@infradead.org> - 2.0.1-8
+- Fix libdir handling so it works on more arches than x86_64
+
 * Wed Apr 18 2007 Thorsten Leemhuis <fedora[AT]leemhuis.info> - 2.0.1-7
 - Fix typo
 
