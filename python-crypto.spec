@@ -4,8 +4,8 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	8
-License:	Python License (CNRI Python License)
+Release:	8.1
+License:	Public Domain
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
 Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.1.tar.gz
@@ -61,6 +61,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Aug 03 2007 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info>
+- Update License field due to the "Licensing guidelines changes"
+
 * Mon Jun 04 2007 David Woodhouse <dwmw2@infradead.org> - 2.0.1-8
 - Fix libdir handling so it works on more arches than x86_64
 
