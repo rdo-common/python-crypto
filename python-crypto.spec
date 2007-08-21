@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	8.1
+Release:	9.1
 License:	Public Domain
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
@@ -13,7 +13,6 @@ BuildRequires:	python >= 2.2
 BuildRequires:	python-devel >= 2.2
 BuildRequires:	gmp-devel >= 4.1
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
-Requires:	python-abi = %(%{__python} -c "import sys ; print sys.version[:3]")
 
 %description
 Python-crypto is a collection of both secure hash functions (such as MD5 and
@@ -61,6 +60,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 21 2007 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 2.0.1-9
+- Remove the old and outdated python-abi hack
+
 * Fri Aug 03 2007 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info>
 - Update License field due to the "Licensing guidelines changes"
 
