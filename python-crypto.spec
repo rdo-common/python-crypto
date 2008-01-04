@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	10.1
+Release:	11.1
 License:	Public Domain
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
@@ -42,7 +42,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LICENSE Doc
-%{python_sitelib}/*.egg-info
+%{python_sitearch}/*.egg-info
 %{python_sitearch}/Crypto/*.py*
 %{python_sitearch}/Crypto/Cipher/*.so
 %{python_sitearch}/Crypto/Cipher/*.py*
@@ -61,6 +61,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan 04 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 2.0.1-11
+- egg-info file in python_sitearch and not in python_sitelib
+
 * Fri Jan 04 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 2.0.1-10
 - ship egg-file
 
