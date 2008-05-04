@@ -4,11 +4,12 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	12.1
+Release:	13.1
 License:	Public Domain
 Group:		Development/Libraries
 URL:		http://www.amk.ca/python/code/crypto.html
 Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.1.tar.gz
+Provides:	pycrypto = %{version}-%{release}
 BuildRequires:	python >= 2.2
 BuildRequires:	python-devel >= 2.2
 BuildRequires:	gmp-devel >= 4.1
@@ -61,6 +62,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun May 04 2008 Thorsten Leemhuis <fedora[AT]leemhuis[DOT]info> - 2.0.1-13
+- provide pycrypto
+
 * Sat Feb 09 2008 Thorsten Leemhuis <fedora[AT]leemhuis[DOT]info> - 2.0.1-12
 - rebuilt
 
