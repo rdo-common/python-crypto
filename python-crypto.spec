@@ -4,9 +4,10 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	14.1
+Release:	15
 License:	Public Domain
 Group:		Development/Libraries
+# FIXME: In the near future, new releases will be at http://www.dlitz.net/software/pycrypto/
 URL:		http://www.amk.ca/python/code/crypto.html
 Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.1.tar.gz
 Provides:	pycrypto = %{version}-%{release}
@@ -62,6 +63,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Feb 7 2009 Stewart Adam <s.adam at diffingo.com> - 2.0.1-15
+- Add patch to hashlib instead of deprecated md5 and sha modules (#484473)
+
 * Sat Nov 29 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 2.0.1-14.1
 - Rebuild for Python 2.6
 

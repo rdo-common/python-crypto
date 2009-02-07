@@ -1,0 +1,33 @@
+--- HMAC.py.old	2009-02-07 09:08:31.000000000 -0500
++++ HMAC.py	2009-02-07 09:09:08.000000000 -0500
+@@ -33,7 +33,7 @@
+         digestmod: A module supporting PEP 247. Defaults to the md5 module.
+         """
+         if digestmod == None:
+-            import md5
++            from hashlib import md5
+             digestmod = md5
+ 
+         self.digestmod = digestmod
+--- MD5.py.old	2009-02-07 09:08:22.000000000 -0500
++++ MD5.py	2009-02-07 09:09:22.000000000 -0500
+@@ -3,7 +3,7 @@
+ 
+ __revision__ = "$Id: MD5.py,v 1.4 2002/07/11 14:31:19 akuchling Exp $"
+ 
+-from md5 import *
++from hashlib import md5
+ 
+ import md5
+ if hasattr(md5, 'digestsize'):
+--- SHA.py.old	2009-02-07 09:08:38.000000000 -0500
++++ SHA.py	2009-02-07 09:09:32.000000000 -0500
+@@ -3,7 +3,7 @@
+ 
+ __revision__ = "$Id: SHA.py,v 1.4 2002/07/11 14:31:19 akuchling Exp $"
+ 
+-from sha import *
++from hashlib import sha
+ import sha
+ if hasattr(sha, 'digestsize'):
+     digest_size = digestsize
