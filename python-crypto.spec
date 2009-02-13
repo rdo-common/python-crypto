@@ -10,7 +10,13 @@ Group:		Development/Libraries
 # FIXME: In the near future, new releases will be at http://www.dlitz.net/software/pycrypto/
 URL:		http://www.amk.ca/python/code/crypto.html
 Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.1.tar.gz
-Patch0:		pycrypto-2.0.1-hashlib.patch
+# patch taken from 
+# http://gitweb2.dlitz.net/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=d1c4875e1f220652fe7ff8358f56dee3b2aba31b
+Patch0: 	%{name}-fix_buffer_overflow.patch
+# similar patches upstream already 
+# http://gitweb.pycrypto.org/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=d2311689910240e425741a546576129f4c9735e2
+# http://gitweb.pycrypto.org/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=84b793416b52311643bfd456a4544444afbfb5da
+Patch1:		pycrypto-2.0.1-hashlib.patch
 
 Provides:	pycrypto = %{version}-%{release}
 BuildRequires:	python >= 2.2
@@ -27,8 +33,8 @@ etc.).
 %prep
 %setup -n pycrypto-%{version} -q
 sed -i s:/lib:/%_lib:g setup.py
-
-%patch0 -b .hashlib
+%patch0 -b .patch0 -p1
+%patch1 -b .hashlib
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
@@ -66,6 +72,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 13 2009 Thorsten Leemhuis <fedora[AT]leemhuis[DOT]info> - 2.0.1-16
+- add patch to fix #485298 / CVE-2009-0544
+
 * Sat Feb 7 2009 Stewart Adam <s.adam at diffingo.com> - 2.0.1-15.1
 - Oops, actually apply the patch
 - Modify patch so modules remain compatible with PEP 247
