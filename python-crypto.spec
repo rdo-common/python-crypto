@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	15.1
+Release:	16.1
 License:	Public Domain
 Group:		Development/Libraries
 # FIXME: In the near future, new releases will be at http://www.dlitz.net/software/pycrypto/
