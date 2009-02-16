@@ -5,7 +5,7 @@ distutils.sysconfig import get_python_lib; print get_python_lib()")}
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	16.1
+Release:	17
 License:	Public Domain
 Group:		Development/Libraries
 # FIXME: In the near future, new releases will be at http://www.dlitz.net/software/pycrypto/
@@ -75,10 +75,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Fri Feb 13 2009 Stewart Adam <s.adam at diffingo.com> - 2.0.1-16.1
+* Fri Feb 13 2009 Stewart Adam <s.adam at diffingo.com> - 2.0.1-17
 - Use patches in upstream git to fix #484473
 
-* Fri Feb 13 2009 Thorsten Leemhuis <fedora[AT]leemhuis[DOT]info> - 2.0.1-16
+* Fri Feb 13 2009 Thorsten Leemhuis <fedora[AT]leemhuis[DOT]info> - 2.0.1-16.1
 - add patch to fix #485298 / CVE-2009-0544
 
 * Sat Feb 7 2009 Stewart Adam <s.adam at diffingo.com> - 2.0.1-15.1
