@@ -1,4 +1,5 @@
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from 
+distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Summary:	Cryptography library for Python
@@ -13,10 +14,12 @@ Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.1.tar.gz
 # patch taken from 
 # http://gitweb2.dlitz.net/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=d1c4875e1f220652fe7ff8358f56dee3b2aba31b
 Patch0: 	%{name}-fix_buffer_overflow.patch
-# similar patches upstream already 
-# http://gitweb.pycrypto.org/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=d2311689910240e425741a546576129f4c9735e2
+# Python 2.6 compatibility: Use Hash.MD5 instead of Python "md5" module in the HMAC...
 # http://gitweb.pycrypto.org/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=84b793416b52311643bfd456a4544444afbfb5da
-Patch1:		pycrypto-2.0.1-hashlib.patch
+Patch1:         python-crypto-hmac_md5.patch
+# Python 2.6 compatibility: When possible, use hashlib instead of the deprecated 'md5...
+# http://gitweb.pycrypto.org/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=d2311689910240e425741a546576129f4c9735e2
+Patch2:         python-crypto-use_hashlib_when_possible.patch
 
 Provides:	pycrypto = %{version}-%{release}
 BuildRequires:	python >= 2.2
@@ -26,15 +29,15 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
 
 %description
 Python-crypto is a collection of both secure hash functions (such as MD5 and
-SHA), and various encryption algorithms (AES, DES, IDEA, RSA, ElGamal,
-etc.).
+SHA), and various encryption algorithms (AES, DES, IDEA, RSA, ElGamal, etc.).
 
 
 %prep
 %setup -n pycrypto-%{version} -q
 sed -i s:/lib:/%_lib:g setup.py
 %patch0 -b .patch0 -p1
-%patch1 -b .hashlib
+%patch1 -b .patch1 -p1
+%patch2 -b .patch2 -p1
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
@@ -72,6 +75,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 13 2009 Stewart Adam <s.adam at diffingo.com> - 2.0.1-16.1
+- Use patches in upstream git to fix #484473
+
 * Fri Feb 13 2009 Thorsten Leemhuis <fedora[AT]leemhuis[DOT]info> - 2.0.1-16
 - add patch to fix #485298 / CVE-2009-0544
 
