@@ -5,7 +5,7 @@ distutils.sysconfig import get_python_lib; print get_python_lib()")}
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.0.1
-Release:	18
+Release:	19
 License:	Public Domain
 Group:		Development/Libraries
 # FIXME: In the near future, new releases will be at http://www.dlitz.net/software/pycrypto/
@@ -75,6 +75,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.1-19
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
 * Thu Feb 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.1-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
