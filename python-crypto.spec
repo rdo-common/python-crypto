@@ -1,80 +1,83 @@
-%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from 
-distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+%global pythonver %(%{__python} -c "import sys; print sys.version[:3]" || echo 0.0)
+%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Summary:	Cryptography library for Python
 Name:		python-crypto
-Version:	2.0.1
-Release:	19
-License:	Public Domain
+Version:	2.1.0
+Release:	1%{?dist}
+# Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
+License:	Public Domain and Python
 Group:		Development/Libraries
-# FIXME: In the near future, new releases will be at http://www.dlitz.net/software/pycrypto/
-URL:		http://www.amk.ca/python/code/crypto.html
-Source:		http://www.amk.ca/files/python/crypto/pycrypto-2.0.1.tar.gz
-# patch taken from 
-# http://gitweb2.dlitz.net/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=d1c4875e1f220652fe7ff8358f56dee3b2aba31b
-Patch0: 	%{name}-fix_buffer_overflow.patch
-# Python 2.6 compatibility: Use Hash.MD5 instead of Python "md5" module in the HMAC...
-# http://gitweb.pycrypto.org/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=84b793416b52311643bfd456a4544444afbfb5da
-Patch1:         python-crypto-hmac_md5.patch
-# Python 2.6 compatibility: When possible, use hashlib instead of the deprecated 'md5...
-# http://gitweb.pycrypto.org/?p=crypto/pycrypto-2.x.git;a=commitdiff;h=d2311689910240e425741a546576129f4c9735e2
-Patch2:         python-crypto-use_hashlib_when_possible.patch
-
+URL:		http://www.pycrypto.org/
+Source0:	http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-%{version}.tar.gz
+Patch0:		python-crypto-2.1.0-optflags.patch
 Provides:	pycrypto = %{version}-%{release}
-BuildRequires:	python >= 2.2
-BuildRequires:	python-devel >= 2.2
-BuildRequires:	gmp-devel >= 4.1
+BuildRequires:	python-devel >= 2.2, gmp-devel >= 4.1
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
+
+# Don't want provides for python shared objects
+%{?filter_provides_in: %filter_provides_in %{python_sitearch}/Crypto/.*\.so}
+%{?filter_setup}
 
 %description
 Python-crypto is a collection of both secure hash functions (such as MD5 and
-SHA), and various encryption algorithms (AES, DES, IDEA, RSA, ElGamal, etc.).
-
+SHA), and various encryption algorithms (AES, DES, RSA, ElGamal etc.).
 
 %prep
 %setup -n pycrypto-%{version} -q
-sed -i s:/lib:/%_lib:g setup.py
-%patch0 -b .patch0 -p1
-%patch1 -b .patch1 -p1
-%patch2 -b .patch2 -p1
+
+# Use distribution compiler flags rather than upstream's
+%patch0 -p1
+
+# Remove spurious shellbangs
+%{__sed} -i -e '\|^#!/usr/local/bin/python| d' lib/Crypto/Util/RFC1751.py
+
+# Fix permissions for debuginfo
+%{__chmod} -x src/*.c
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
-
+CFLAGS="%{optflags}" %{__python} setup.py build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-find -name "*.py"|xargs %{__perl} -pi -e "s:/usr/local/bin/python:%{__python}:"
+%{__rm} -rf %{buildroot}
+%{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
+# Remove group write permissions on shared objects
+/usr/bin/find %{buildroot}%{python_sitearch} -name '*.so' \
+	-exec %{__chmod} g-w {} \;
+
+# See if there's any egg-info
+if [ -f %{buildroot}%{python_sitearch}/pycrypto-%{version}-py%{pythonver}.egg-info ]; then
+	echo %{python_sitearch}/pycrypto-%{version}-py%{pythonver}.egg-info
+fi > egg-info
+
+%check
+%{__python} setup.py test
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+%{__rm} -rf %{buildroot}
 
-
-%files
+%files -f egg-info
 %defattr(-,root,root,-)
-%doc README TODO ACKS ChangeLog LICENSE Doc
-%{python_sitearch}/*.egg-info
-%{python_sitearch}/Crypto/*.py*
-%{python_sitearch}/Crypto/Cipher/*.so
-%{python_sitearch}/Crypto/Cipher/*.py*
-%{python_sitearch}/Crypto/Hash/*.so
-%{python_sitearch}/Crypto/Hash/*.py*
-%{python_sitearch}/Crypto/Protocol/*.py*
-%{python_sitearch}/Crypto/PublicKey/*.so
-%{python_sitearch}/Crypto/PublicKey/*.py*
-%{python_sitearch}/Crypto/Util/*.py*
-%dir %{python_sitearch}/Crypto
-%dir %{python_sitearch}/Crypto/Cipher/
-%dir %{python_sitearch}/Crypto/Hash/
-%dir %{python_sitearch}/Crypto/Protocol/
-%dir %{python_sitearch}/Crypto/PublicKey/
-%dir %{python_sitearch}/Crypto/Util/
-
+%doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
+%{python_sitearch}/Crypto/
 
 %changelog
+* Tue Feb 16 2010 Paul Howarth <paul@city-fan.org> - 2.1.0-1
+- Update to 2.1.0 (see ChangeLog for details)
+- Remove patches (no longer needed)
+- Use new upstream URLs
+- Upstream has replaced LICENSE with LEGAL/ and COPYRIGHT
+- Clarify that license is mostly Public Domain, partly Python
+- Add %%check section and run the test suite in it
+- Remove upstream's fiddling with compiler optimization flags so we get
+  usable debuginfo
+- Filter out unwanted provides for python shared objects
+- Tidy up egg-info handling
+- Simplify %%files list
+- Pacify rpmlint as much as is reasonable
+- Add dist tag
+
 * Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.1-19
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
