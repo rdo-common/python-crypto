@@ -1,16 +1,16 @@
-%global pythonver %(%{__python} -c "import sys; print sys.version[:3]" || echo 0.0)
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+%global pythonver %(%{__python} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 
 Summary:	Cryptography library for Python
 Name:		python-crypto
-Version:	2.1.0
-Release:	2%{?dist}
+Version:	2.2
+Release:	1%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
 URL:		http://www.pycrypto.org/
 Source0:	http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-%{version}.tar.gz
-Patch0:		python-crypto-2.1.0-optflags.patch
+Patch0:		python-crypto-2.2-optflags.patch
 Provides:	pycrypto = %{version}-%{release}
 BuildRequires:	python-devel >= 2.2, gmp-devel >= 4.1
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
@@ -33,7 +33,7 @@ SHA), and various encryption algorithms (AES, DES, RSA, ElGamal etc.).
 %{__sed} -i -e '\|^#!/usr/local/bin/python| d' lib/Crypto/Util/RFC1751.py
 
 # Fix permissions for debuginfo
-%{__chmod} -x src/*.c
+%{__chmod} -x src/_fastmath.c
 
 %build
 CFLAGS="%{optflags}" %{__python} setup.py build
@@ -63,6 +63,17 @@ fi > egg-info
 %{python_sitearch}/Crypto/
 
 %changelog
+* Tue Aug  3 2010 Paul Howarth <paul@city-fan.org> - 2.2-1
+- Update to 2.2
+  - Deprecated Crypto.Util.number.getRandomNumber()
+  - It's been replaced by getRandomNBitInteger and getRandomInteger
+  - Better isPrime() and getPrime() implementations
+  - getStrongPrime() implementation for generating RSA primes
+  - Support for importing and exporting RSA keys in DER and PEM format
+  - Fix PyCrypto when floor division (python -Qnew) is enabled
+  - When building using gcc, use -std=c99 for compilation
+- Update optflags patch
+
 * Thu Jul 22 2010 David Malcolm <dmalcolm@redhat.com> - 2.1.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
 
