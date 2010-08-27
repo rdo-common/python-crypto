@@ -3,7 +3,7 @@
 
 Summary:	Cryptography library for Python
 Name:		python-crypto
-Version:	2.2
+Version:	2.3
 Release:	1%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
@@ -11,8 +11,9 @@ Group:		Development/Libraries
 URL:		http://www.pycrypto.org/
 Source0:	http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-%{version}.tar.gz
 Patch0:		python-crypto-2.2-optflags.patch
+Patch1:		pycrypto-2.3-lib64.patch
 Provides:	pycrypto = %{version}-%{release}
-BuildRequires:	python-devel >= 2.2, gmp-devel >= 4.1
+BuildRequires:	python2-devel >= 2.2, gmp-devel >= 4.1
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
 
 # Don't want provides for python shared objects
@@ -24,10 +25,15 @@ Python-crypto is a collection of both secure hash functions (such as MD5 and
 SHA), and various encryption algorithms (AES, DES, RSA, ElGamal etc.).
 
 %prep
-%setup -n pycrypto-%{version} -q
+%setup -n pycrypto-%{version} -q -c
 
 # Use distribution compiler flags rather than upstream's
 %patch0 -p1
+
+# Look in the right place for libgmp
+%if "%{_lib}" == "lib64"
+%patch1 -p1
+%endif
 
 # Remove spurious shellbangs
 %{__sed} -i -e '\|^#!/usr/local/bin/python| d' lib/Crypto/Util/RFC1751.py
@@ -54,6 +60,11 @@ fi > egg-info
 %check
 %{__python} setup.py test
 
+# Benchmark uses os.urandom(), which is available from python 2.4
+%if %(%{__python} -c "import sys; print sys.hexversion >= 0x02040000 and 1 or 0" 2>/dev/null || echo 0)
+PYTHONPATH=%{buildroot}%{python_sitearch} %{__python} pct-speedtest.py
+%endif
+
 %clean
 %{__rm} -rf %{buildroot}
 
@@ -63,6 +74,19 @@ fi > egg-info
 %{python_sitearch}/Crypto/
 
 %changelog
+* Fri Aug 27 2010 Paul Howarth <paul@city-fan.org> - 2.3-1
+- Update to 2.3
+  - Fix NameError when attempting to use deprecated getRandomNumber() function
+  - _slowmath: Compute RSA u parameter when it's not given to RSA.construct;
+    this makes _slowmath behave the same as _fastmath in this regard
+  - Make RSA.generate raise a more user-friendly exception message when the
+    user tries to generate a bogus-length key
+- Add -c option to %%setup because upstream tarball has dropped the top-level
+  directory
+- Run benchmark as part of %%check if we have python 2.4 or later
+- BR: python2-devel rather than just python-devel
+- Add patch to make sure we can find libgmp in 64-bit multilib environments
+
 * Tue Aug  3 2010 Paul Howarth <paul@city-fan.org> - 2.2-1
 - Update to 2.2
   - Deprecated Crypto.Util.number.getRandomNumber()
