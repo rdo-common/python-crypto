@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -42,7 +42,7 @@ SHA), and various encryption algorithms (AES, DES, RSA, ElGamal etc.).
 %{__chmod} -x src/_fastmath.c
 
 %build
-CFLAGS="%{optflags}" %{__python} setup.py build
+CFLAGS="%{optflags} -fno-strict-aliasing" %{__python} setup.py build
 
 %install
 %{__rm} -rf %{buildroot}
@@ -74,6 +74,9 @@ PYTHONPATH=%{buildroot}%{python_sitearch} %{__python} pct-speedtest.py
 %{python_sitearch}/Crypto/
 
 %changelog
+* Fri Sep 24 2010 David Malcolm <dmalcolm@redhat.com> - 2.3-2
+- add "-fno-strict-aliasing" to compilation flags
+
 * Fri Aug 27 2010 Paul Howarth <paul@city-fan.org> - 2.3-1
 - Update to 2.3
   - Fix NameError when attempting to use deprecated getRandomNumber() function
