@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.3
-Release:	2%{?dist}
+Release:	3%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -74,6 +74,9 @@ PYTHONPATH=%{buildroot}%{python_sitearch} %{__python} pct-speedtest.py
 %{python_sitearch}/Crypto/
 
 %changelog
+* Wed Sep 29 2010 jkeating - 2.3-3
+- Rebuilt for gcc bug 634757
+
 * Fri Sep 24 2010 David Malcolm <dmalcolm@redhat.com> - 2.3-2
 - add "-fno-strict-aliasing" to compilation flags
 
