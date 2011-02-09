@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.3
-Release:	3%{?dist}
+Release:	4%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -74,6 +74,9 @@ PYTHONPATH=%{buildroot}%{python_sitearch} %{__python} pct-speedtest.py
 %{python_sitearch}/Crypto/
 
 %changelog
+* Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.3-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Wed Sep 29 2010 jkeating - 2.3-3
 - Rebuilt for gcc bug 634757
 
