@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.3
-Release:	4%{?dist}
+Release:	5%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -14,7 +14,7 @@ Patch0:		python-crypto-2.2-optflags.patch
 Patch1:		pycrypto-2.3-lib64.patch
 Provides:	pycrypto = %{version}-%{release}
 BuildRequires:	python2-devel >= 2.2, gmp-devel >= 4.1
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
+BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(id -nu)
 
 # Don't want provides for python shared objects
 %{?filter_provides_in: %filter_provides_in %{python_sitearch}/Crypto/.*\.so}
@@ -22,10 +22,10 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(%{__id_u} -n)
 
 %description
 Python-crypto is a collection of both secure hash functions (such as MD5 and
-SHA), and various encryption algorithms (AES, DES, RSA, ElGamal etc.).
+SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 %prep
-%setup -n pycrypto-%{version} -q -c
+%setup -n pycrypto-%{version} -q
 
 # Use distribution compiler flags rather than upstream's
 %patch0 -p1
@@ -36,21 +36,20 @@ SHA), and various encryption algorithms (AES, DES, RSA, ElGamal etc.).
 %endif
 
 # Remove spurious shellbangs
-%{__sed} -i -e '\|^#!/usr/local/bin/python| d' lib/Crypto/Util/RFC1751.py
+sed -i -e '\|^#!/usr/local/bin/python| d' lib/Crypto/Util/RFC1751.py
 
 # Fix permissions for debuginfo
-%{__chmod} -x src/_fastmath.c
+chmod -c -x src/_fastmath.c
 
 %build
 CFLAGS="%{optflags} -fno-strict-aliasing" %{__python} setup.py build
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
 # Remove group write permissions on shared objects
-/usr/bin/find %{buildroot}%{python_sitearch} -name '*.so' \
-	-exec %{__chmod} g-w {} \;
+find %{buildroot}%{python_sitearch} -name '*.so' -exec chmod -c g-w {} \;
 
 # See if there's any egg-info
 if [ -f %{buildroot}%{python_sitearch}/pycrypto-%{version}-py%{pythonver}.egg-info ]; then
@@ -66,7 +65,7 @@ PYTHONPATH=%{buildroot}%{python_sitearch} %{__python} pct-speedtest.py
 %endif
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files -f egg-info
 %defattr(-,root,root,-)
@@ -74,6 +73,10 @@ PYTHONPATH=%{buildroot}%{python_sitearch} %{__python} pct-speedtest.py
 %{python_sitearch}/Crypto/
 
 %changelog
+* Wed May 11 2011 Paul Howarth <paul@city-fan.org> - 2.3-5
+- Upstream rolled new tarball with top-level directory restored
+- Nobody else likes macros for commands
+
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.3-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
