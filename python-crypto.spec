@@ -4,7 +4,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.3
-Release:	5%{?dist}
+Release:	5%{?dist}.1
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -73,6 +73,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/Crypto/
 
 %changelog
+* Wed Oct 12 2011 Peter Schiffer <pschiffe@redhat.com> - 2.3-5.1
+- rebuild with new gmp
+
 * Wed May 11 2011 Paul Howarth <paul@city-fan.org> - 2.3-5
 - Upstream rolled new tarball with top-level directory restored
 - Nobody else likes macros for commands
