@@ -3,15 +3,14 @@
 
 Summary:	Cryptography library for Python
 Name:		python-crypto
-Version:	2.3
-Release:	5%{?dist}.1
+Version:	2.4
+Release:	1%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
 URL:		http://www.pycrypto.org/
 Source0:	http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-%{version}.tar.gz
-Patch0:		python-crypto-2.2-optflags.patch
-Patch1:		pycrypto-2.3-lib64.patch
+Patch0:		python-crypto-2.4-optflags.patch
 Provides:	pycrypto = %{version}-%{release}
 BuildRequires:	python2-devel >= 2.2, gmp-devel >= 4.1
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot-%(id -nu)
@@ -29,17 +28,6 @@ SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 # Use distribution compiler flags rather than upstream's
 %patch0 -p1
-
-# Look in the right place for libgmp
-%if "%{_lib}" == "lib64"
-%patch1 -p1
-%endif
-
-# Remove spurious shellbangs
-sed -i -e '\|^#!/usr/local/bin/python| d' lib/Crypto/Util/RFC1751.py
-
-# Fix permissions for debuginfo
-chmod -c -x src/_fastmath.c
 
 %build
 CFLAGS="%{optflags} -fno-strict-aliasing" %{__python} setup.py build
@@ -70,11 +58,37 @@ rm -rf %{buildroot}
 %files -f egg-info
 %defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
+%doc python-3-changes.txt
 %{python_sitearch}/Crypto/
 
 %changelog
+* Mon Oct 24 2011 Paul Howarth <paul@city-fan.org> - 2.4-1
+- Update to 2.4
+  - Python 3 support! PyCrypto now supports every version of Python from 2.1
+    through to 3.2
+  - Timing-attack countermeasures in _fastmath: when built against libgmp
+    version 5 or later, we use mpz_powm_sec instead of mpz_powm, which should
+    prevent the timing attack described by Geremy Condra at PyCon 2011
+  - New hash modules (for Python ≥ 2.5 only): SHA224, SHA384 and SHA512
+  - Configuration using GNU autoconf, which should help fix a bunch of build
+    issues
+  - Support using MPIR as an alternative to GMP
+  - Improve the test command in setup.py, by allowing tests to be performed on
+    a single sub-package or module only
+  - Fix double-decref of "counter" when Cipher object initialization fails
+  - Apply patches from Debian's python-crypto 2.3-3 package:
+    - fix-RSA-generate-exception.patch
+    - epydoc-exclude-introspect.patch
+    - no-usr-local.patch
+  - Fix launchpad bug #702835: "Import key code is not compatible with GMP
+    library"
+  - More tests, better documentation, various bugfixes
+- Update patch for imposing our own compiler optimization flags
+- Drop lib64 patch, no longer needed
+- No longer need to fix up permissions and remove shellbangs
+
 * Wed Oct 12 2011 Peter Schiffer <pschiffe@redhat.com> - 2.3-5.1
-- rebuild with new gmp
+- Rebuild with new gmp
 
 * Wed May 11 2011 Paul Howarth <paul@city-fan.org> - 2.3-5
 - Upstream rolled new tarball with top-level directory restored
@@ -87,7 +101,7 @@ rm -rf %{buildroot}
 - Rebuilt for gcc bug 634757
 
 * Fri Sep 24 2010 David Malcolm <dmalcolm@redhat.com> - 2.3-2
-- add "-fno-strict-aliasing" to compilation flags
+- Add "-fno-strict-aliasing" to compilation flags
 
 * Fri Aug 27 2010 Paul Howarth <paul@city-fan.org> - 2.3-1
 - Update to 2.3
