@@ -7,7 +7,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.4.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -125,6 +125,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Sat Jan  7 2012 Paul Howarth <paul@city-fan.org> - 2.4.1-2
+- Rebuild with gcc 4.7
+
 * Mon Nov  7 2011 Paul Howarth <paul@city-fan.org> - 2.4.1-1
 - Update to 2.4.1
   - Fix "error: Setup script exited with error: src/config.h: No such file or
