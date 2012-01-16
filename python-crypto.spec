@@ -6,8 +6,8 @@
 
 Summary:	Cryptography library for Python
 Name:		python-crypto
-Version:	2.4.1
-Release:	2%{?dist}
+Version:	2.5
+Release:	1%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -112,19 +112,39 @@ rm -rf %{buildroot}
 %files -f egg-info
 %defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
-%doc python-3-changes.txt
 %{python_sitearch}/Crypto/
 
 %if %{with_python3}
 %files -n python3-crypto
 %defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
-%doc python-3-changes.txt
 %{python3_sitearch}/Crypto/
 %{python3_sitearch}/pycrypto-*py3.*.egg-info
 %endif
 
 %changelog
+* Mon Jan 16 2012 Paul Howarth <paul@city-fan.org> - 2.5-1
+- Update to 2.5
+  - Added PKCS#1 encryption schemes (v1.5 and OAEP); we now have a decent,
+    easy-to-use non-textbook RSA implementation
+  - Added PKCS#1 signature schemes (v1.5 and PSS); v1.5 required some
+    extensive changes to Hash modules to contain the algorithm-specific ASN.1
+    OID, and to that end we now always have a (thin) Python module to hide the
+    one in pure C
+  - Added 2 standard Key Derivation Functions (PBKDF1 and PBKDF2)
+  - Added export/import of RSA keys in OpenSSH and PKCS#8 formats
+  - Added password-protected export/import of RSA keys (one old method for
+    PKCS#8 PEM only)
+  - Added ability to generate RSA key pairs with configurable public
+    exponent e
+  - Added ability to construct an RSA key pair even if only the private
+    exponent d is known, and not p and q
+  - Added SHA-2 C source code (fully from Lorenz Quack)
+  - Unit tests for all the above
+  - Updates to documentation (both inline and in Doc/pycrypt.rst)
+  - Minor bug fixes (setup.py and tests)
+- Upstream no longer ships python-3-changes.txt
+
 * Sat Jan  7 2012 Paul Howarth <paul@city-fan.org> - 2.4.1-2
 - Rebuild with gcc 4.7
 
