@@ -6,8 +6,8 @@
 
 Summary:	Cryptography library for Python
 Name:		python-crypto
-Version:	2.5
-Release:	2%{?dist}
+Version:	2.6
+Release:	1%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -15,9 +15,6 @@ URL:		http://www.pycrypto.org/
 Source0:	http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-%{version}.tar.gz
 Patch0:		python-crypto-2.4-optflags.patch
 Patch1:		python-crypto-2.4-fix-pubkey-size-divisions.patch
-Patch2:		0001-Fix-segfaults-reference-leaks-in-error-handling.patch
-Patch3:		0002-Fix-typo.patch
-Patch4:		0003-Fix-segfault-if-Crypto.Random.new-is-missing.patch
 Provides:	pycrypto = %{version}-%{release}
 BuildRequires:	python2-devel >= 2.2, gmp-devel >= 4.1
 %if %{with_python3}
@@ -57,12 +54,6 @@ This is the Python 3 build of the package.
 
 # Fix divisions within benchmarking suite:
 %patch1 -p1
-
-# Upstream fixes for issues found by Dave Malcolm's
-# experimental static analysis tool (#790584)
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
 
 # Prepare python3 build (setup.py doesn't run 2to3 on pct-speedtest.py)
 %if %{with_python3}
@@ -132,6 +123,24 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Thu May 24 2012 Paul Howarth <paul@city-fan.org> - 2.6-1
+- Update to 2.6
+  - Fix insecure ElGamal key generation (launchpad bug #985164, CVE-2012-2417)
+  - Huge documentation cleanup
+  - Added more tests, including test vectors from NIST 800-38A
+  - Remove broken MODE_PGP, which never actually worked properly
+  - A new mode, MODE_OPENPGP, has been added for people wishing to write
+    OpenPGP implementations (see also launchpad bug #996814)
+  - Fix: getPrime with invalid input causes Python to abort with fatal error
+    (launchpad bug #988431)
+  - Fix: Segfaults within error-handling paths (launchpad bug #934294)
+  - Fix: Block ciphers allow empty string as IV (launchpad bug #997464)
+  - Fix DevURandomRNG to work with Python3's new I/O stack
+  - Remove automagic dependencies on libgmp and libmpir; let the caller
+    disable them using args
+  - Many other minor bug fixes and improvements
+- Drop upstream patches
+
 * Sat Feb 18 2012 Paul Howarth <paul@city-fan.org> - 2.5-2
 - Add upstream fixes for issues found by Dave Malcolm's experimental static
   analysis tool (#790584)
