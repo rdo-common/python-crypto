@@ -2,12 +2,12 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 
 # Python3 introduced in Fedora 13
-%global with_python3 %([ 0%{?fedora} -gt 12 -o 0%{?rhel} -gt 6 ] && echo 1 || echo 0)
+%global with_python3 %([ 0%{?fedora} -gt 12 ] && echo 1 || echo 0)
 
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.6
-Release:	2%{?dist}
+Release:	3%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -123,6 +123,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Fri Aug  3 2012 David Malcolm <dmalcolm@redhat.com> - 2.6-3
+- remove rhel logic from with_python3 conditional
+
 * Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.6-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
