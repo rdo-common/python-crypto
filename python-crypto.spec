@@ -7,7 +7,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.6
-Release:	4%{?dist}
+Release:	5%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -123,6 +123,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.6-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Fri Aug 03 2012 David Malcolm <dmalcolm@redhat.com> - 2.6-4
 - rebuild for https://fedoraproject.org/wiki/Features/Python_3.3
 
