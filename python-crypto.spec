@@ -7,7 +7,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.6.1
-Release:	2%{?dist}
+Release:	3%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -15,8 +15,9 @@ URL:		http://www.pycrypto.org/
 Source0:	http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-%{version}.tar.gz
 Patch0:		python-crypto-2.4-optflags.patch
 Patch1:		python-crypto-2.4-fix-pubkey-size-divisions.patch
+Patch2:		pycrypto-2.6.1-unbundle-libtomcrypt.patch
 Provides:	pycrypto = %{version}-%{release}
-BuildRequires:	python2-devel >= 2.2, gmp-devel >= 4.1
+BuildRequires:	python2-devel >= 2.2, gmp-devel >= 4.1, libtomcrypt-devel >= 1.16
 %if %{with_python3}
 BuildRequires:	python-tools
 BuildRequires:	python3-devel
@@ -54,6 +55,10 @@ This is the Python 3 build of the package.
 
 # Fix divisions within benchmarking suite:
 %patch1 -p1
+
+# Unbundle libtomcrypt (#1087557)
+rm -rf src/libtom
+%patch2
 
 # Prepare python3 build (setup.py doesn't run 2to3 on pct-speedtest.py)
 %if %{with_python3}
@@ -110,19 +115,21 @@ cd -
 rm -rf %{buildroot}
 
 %files -f egg-info
-%defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
 %{python_sitearch}/Crypto/
 
 %if %{with_python3}
 %files -n python3-crypto
-%defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
 %{python3_sitearch}/Crypto/
 %{python3_sitearch}/pycrypto-*py3.*.egg-info
 %endif
 
 %changelog
+* Wed May 14 2014 Paul Howarth <paul@city-fan.org> - 2.6.1-3
+- Unbundle libtomcrypt (#1087557)
+- Drop %%defattr, redundant since rpm 4.4
+
 * Wed May 14 2014 Bohuslav Kabrda <bkabrda@redhat.com> - 2.6.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
 
@@ -352,7 +359,7 @@ rm -rf %{buildroot}
 * Wed Aug 17 2005 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0.1-1
 - Update to 2.0.1
 - Use Dist
-- Drop python-crypto-64bit-unclean.patch, similar patch was applied 
+- Drop python-crypto-64bit-unclean.patch, similar patch was applied
   upstream
 
 * Thu May 05 2005 Thorsten Leemhuis <fedora at leemhuis dot info> - 0:2.0-4
