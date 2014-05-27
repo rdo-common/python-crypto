@@ -7,7 +7,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.6.1
-Release:	3%{?dist}
+Release:	4%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 Group:		Development/Libraries
@@ -126,6 +126,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Tue May 27 2014 Paul Howarth <paul@city-fan.org> - 2.6.1-4
+- Rebuild for python3 3.4 in Rawhide again
+
 * Wed May 14 2014 Paul Howarth <paul@city-fan.org> - 2.6.1-3
 - Unbundle libtomcrypt (#1087557)
 - Drop %%defattr, redundant since rpm 4.4
