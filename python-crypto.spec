@@ -44,7 +44,7 @@ This is the Python 2 build of the package.
 
 %package -n python%{python3_pkgversion}-crypto
 Summary:	Cryptography library for Python 3
-%{?python_provide:%python_provide python3-crypto}
+%{?python_provide:%python_provide python%{python3_pkgversion}-crypto}
 
 %description -n python%{python3_pkgversion}-crypto
 PyCrypto is a collection of both secure hash functions (such as MD5 and
