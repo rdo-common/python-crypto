@@ -10,7 +10,7 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.6.1
-Release:	11%{?dist}
+Release:	10%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 URL:		http://www.pycrypto.org/
@@ -26,7 +26,6 @@ BuildRequires:	libtomcrypt-devel >= 1.16
 BuildRequires:	python%{python2_pkgversion}-devel >= 2.4
 BuildRequires:	python%{python3_pkgversion}-devel
 BuildRequires:	python-tools
-BuildRequires:  python3-pkgversion-macros
 
 %description
 PyCrypto is a collection of both secure hash functions (such as MD5 and
@@ -104,9 +103,6 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} %{__python3} pct-speedtest3.py
 %{python3_sitearch}/pycrypto-%{version}-py3.*.egg-info
 
 %changelog
-* Thu Oct 20 2016 Patrick Uiterwijk <puiterwijk@redhat.com> - 2.6.1-11
-- Add python3-pkgversion-macros as BuildRequires as it is NOT in minimal buildroot
-
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.6.1-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
