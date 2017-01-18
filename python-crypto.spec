@@ -10,14 +10,15 @@
 Summary:	Cryptography library for Python
 Name:		python-crypto
 Version:	2.6.1
-Release:	12%{?dist}
+Release:	13%{?dist}
 # Mostly Public Domain apart from parts of HMAC.py and setup.py, which are Python
 License:	Public Domain and Python
 URL:		http://www.pycrypto.org/
 Source0:	http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-%{version}.tar.gz
 Patch0:		python-crypto-2.4-optflags.patch
 Patch1:		python-crypto-2.4-fix-pubkey-size-divisions.patch
-Patch2:		pycrypto-2.6.1-unbundle-libtomcrypt.patch
+Patch2:		pycrypto-2.6.1-CVE-2013-7459.patch
+Patch3:		pycrypto-2.6.1-unbundle-libtomcrypt.patch
 BuildRequires:	coreutils
 BuildRequires:	findutils
 BuildRequires:	gcc
@@ -61,9 +62,14 @@ This is the Python 3 build of the package.
 # Fix divisions within benchmarking suite:
 %patch1 -p1
 
+# AES.new with invalid parameter crashes python
+# https://github.com/dlitz/pycrypto/issues/176
+# CVE-2013-7459
+%patch2 -p1
+
 # Unbundle libtomcrypt (#1087557)
 rm -rf src/libtom
-%patch2
+%patch3
 
 # setup.py doesn't run 2to3 on pct-speedtest.py
 cp pct-speedtest.py pct-speedtest3.py
@@ -103,6 +109,10 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} %{__python3} pct-speedtest3.py
 %{python3_sitearch}/pycrypto-%{version}-py3.*.egg-info
 
 %changelog
+* Wed Jan 18 2017 Paul Howarth <paul@city-fan.org> - 2.6.1-13
+- AES.new with invalid parameter crashes python (CVE-2013-7459)
+  (https://github.com/dlitz/pycrypto/issues/176)
+
 * Fri Dec 09 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.6.1-12
 - Rebuild for Python 3.6
 
