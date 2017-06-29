@@ -1,0 +1,5 @@
+from Config import *
+
+# LICENSE.orig is not a backup file
+addFilter("backup-file-in-package /usr/share/licenses/python-crypto/LEGAL/copy/LICENSE.orig")
+
