@@ -1,6 +1,10 @@
 # Share docs between python2 and python3 packages
 %global _docdir_fmt %{name}
 
+%if 0%{?fedora} || 0%{?epel}
+%global with_python3 1
+%endif
+
 # Single python3 version in Fedora, python3_pkgversion macro not available
 %{!?python3_pkgversion:%global python3_pkgversion 3}
 
@@ -25,7 +29,6 @@ BuildRequires:	gcc
 BuildRequires:	gmp-devel >= 4.1
 BuildRequires:	libtomcrypt-devel >= 1.16
 BuildRequires:	python%{python2_pkgversion}-devel >= 2.4
-BuildRequires:	python%{python3_pkgversion}-devel
 # python2-tools needed for 2to3
 BuildRequires:	python2-tools
 
@@ -44,15 +47,18 @@ SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 This is the Python 2 build of the package.
 
+%if 0%{?with_python3}
 %package -n python%{python3_pkgversion}-crypto
 Summary:	Cryptography library for Python 3
 %{?python_provide:%python_provide python%{python3_pkgversion}-crypto}
+BuildRequires:	python%{python3_pkgversion}-devel
 
 %description -n python%{python3_pkgversion}-crypto
 PyCrypto is a collection of both secure hash functions (such as MD5 and
 SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 This is the Python 3 build of the package.
+%endif
 
 %prep
 %setup -n pycrypto-%{version} -q
@@ -79,23 +85,33 @@ cp pct-speedtest.py pct-speedtest3.py
 %build
 %global optflags %{optflags} -fno-strict-aliasing
 %py2_build
+%if 0%{?with_python3}
 %py3_build
+%endif
 
 %install
 %py2_install
+%if 0%{?with_python3}
 %py3_install
+%endif
 
 # Remove group write permissions on shared objects
 find %{buildroot}%{python2_sitearch} -name '*.so' -exec chmod -c g-w {} \;
+%if 0%{?with_python3}
 find %{buildroot}%{python3_sitearch} -name '*.so' -exec chmod -c g-w {} \;
+%endif
 
 %check
 %{__python2} setup.py test
+%if 0%{?with_python3}
 %{__python3} setup.py test
+%endif
 
 # Benchmark
 PYTHONPATH=%{buildroot}%{python2_sitearch} %{__python2} pct-speedtest.py
+%if 0%{?with_python3}
 PYTHONPATH=%{buildroot}%{python3_sitearch} %{__python3} pct-speedtest3.py
+%endif
 
 %files -n python%{python2_pkgversion}-crypto
 %license COPYRIGHT LEGAL/
@@ -103,11 +119,13 @@ PYTHONPATH=%{buildroot}%{python3_sitearch} %{__python3} pct-speedtest3.py
 %{python2_sitearch}/Crypto/
 %{python2_sitearch}/pycrypto-%{version}-py2.*.egg-info
 
+%if 0%{?with_python3}
 %files -n python%{python3_pkgversion}-crypto
 %license COPYRIGHT LEGAL/
 %doc README TODO ACKS ChangeLog Doc/
 %{python3_sitearch}/Crypto/
 %{python3_sitearch}/pycrypto-%{version}-py3.*.egg-info
+%endif
 
 %changelog
 * Thu Jun 29 2017 Paul Howarth <paul@city-fan.org> - 2.6.1-15
